@@ -1,11 +1,23 @@
 <?php
 // /andiamo-backend-native/api/auth.php
 
-require_once __DIR__ . '/../../bootstrap.php';
+// ===== BLOK KODE CORS (Biarkan seperti ini) =====
+header("Access-Control-Allow-Origin: https://andiamo.elenmorcreative.com");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, Accept, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(204);
+    exit();
+}
+
+// ===== PERBAIKAN DI BARIS INI =====
+// Mengubah dari '/../../' menjadi '/../'
+require_once __DIR__ . '/../bootstrap.php';
 
 // Selalu mulai sesi di setiap request yang butuh otentikasi
 if (session_status() === PHP_SESSION_NONE) {
-    // Pengaturan cookie session agar bisa diakses oleh subdomain frontend
     session_set_cookie_params([
         'lifetime' => $_ENV['SESSION_LIFETIME'] * 60 ?? 7200,
         'path' => '/',
@@ -52,12 +64,10 @@ function handleLogin($db)
     $user = $result->fetch_assoc();
 
     if ($user && password_verify($password, $user['password'])) {
-        // Login berhasil, simpan info user di session
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_email'] = $user['email'];
 
-        // Kirim data user kembali ke frontend
         json_response([
             'id' => $user['id'],
             'name' => $user['name'],

@@ -1,6 +1,18 @@
 <?php
 // /andiamo-backend-native/api/batches/index.php
 
+// ===== TAMBAHKAN BLOK KODE CORS DI SINI =====
+header("Access-Control-Allow-Origin: https://andiamo.elenmorcreative.com");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-control-allow-headers: Content-Type, Authorization, Accept, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(204);
+    exit();
+}
+// ===== AKHIR BLOK KODE CORS =====
+
 require_once __DIR__ . '/../../bootstrap.php';
 
 // Mulai atau lanjutkan sesi

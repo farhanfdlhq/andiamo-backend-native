@@ -1,17 +1,12 @@
-# /andiamo-backend-native/.htaccess
-
 <IfModule mod_rewrite.c>
-    RewriteEngine On
+  RewriteEngine On
+  RewriteBase /
 
-    # Arahkan semua request ke /api/batches/{id} ke file single.php
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^api/batches/([0-9]+)$ /api/batches/single.php?id=$1 [QSA,L]
+  # Jika file atau direktori yang diminta tidak ada secara fisik...
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
 
-    # Arahkan semua request ke /api/batches ke file index.php
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^api/batches$ /api/batches/index.php [QSA,L]
-
-    # Aturan lain bisa ditambahkan di sini
+  # ...maka alihkan SEMUA permintaan ke router.php
+  # Pastikan path ke router.php Anda benar.
+  RewriteRule . /api/router.php [L]
 </IfModule>
